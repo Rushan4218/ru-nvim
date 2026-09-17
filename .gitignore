@@ -1,0 +1,11 @@
+# Neovim swap/backup files
+*.swp
+*.swo
+*.swn
+*.un~
+
+# OS/editor junk
+.DS_Store
+
+# Local Neovim runtime/data if created inside this repo
+.nvim/
