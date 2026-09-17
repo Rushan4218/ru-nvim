@@ -17,3 +17,12 @@ vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float)
 -- Telescope
 vim.keymap.set("n", "<leader><leader>", "<cmd>Telescope find_files<CR>")
 vim.keymap.set("n", "<leader>f", "<cmd>Telescope live_grep<CR>")
+
+-- split windows
+vim.keymap.set("n", "<leader>|", "<cmd>vsplit<CR>")
+vim.keymap.set("n", "<leader>-", "<cmd>split<CR>")
+
+-- buffer management
+vim.keymap.set("n", "<S-l>", "<cmd>bnext<CR>")
+vim.keymap.set("n", "<S-h>", "<cmd>bprev<CR>")
+vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<CR>")

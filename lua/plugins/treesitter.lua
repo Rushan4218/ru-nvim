@@ -16,6 +16,8 @@ return {
         "bash",
         "html",
         "css",
+        "markdown",
+        "markdown_inline",
       },
 
       highlight = {

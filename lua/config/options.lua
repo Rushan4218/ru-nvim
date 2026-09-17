@@ -23,6 +23,15 @@ vim.opt.termguicolors = true
 
 vim.opt.showmode = false
 
--- make background transparent
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+-- diagnostic config
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true
+})
+
+
+-- window decoration
+vim.o.winborder = "rounded"
