@@ -90,8 +90,8 @@ Searches include hidden files while ignoring noisy directories such as:
 Current mappings:
 
 ```text
-<leader>r   Search and replace across project
-<leader>rf  Search and replace in current file
+<leader>R   Search and replace across project
+<leader>r  Search and replace in current file
 ```
 
 ### Git
