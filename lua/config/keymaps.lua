@@ -26,3 +26,4 @@ vim.keymap.set("n", "<leader>-", "<cmd>split<CR>")
 vim.keymap.set("n", "<S-l>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-h>", "<cmd>bprev<CR>")
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<CR>")
+
