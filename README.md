@@ -16,6 +16,10 @@ I want to understand what every major part of my editor does, while still having
 * Prefer simple keymaps over layers of abstractions
 * Build the setup incrementally and actually use it before adding more
 
+The goal is not to minimize the number of plugins.
+
+The goal is to have **only plugins that are worth having**.
+
 ## Current Setup
 
 ### Core
@@ -42,7 +46,7 @@ I want to understand what every major part of my editor does, while still having
 * Spaces instead of tabs
 * Case-insensitive search with smart case
 * Split windows open to the right and below
-* System clipboard integration
+* Native Neovim editing functionality wherever possible
 
 ### LSP
 
@@ -61,6 +65,8 @@ The configuration is designed to be extensible to any language supported by the 
 * `blink.cmp`
 
 Completion is provided through the LSP where available, with automatic documentation support.
+
+The configuration intentionally keeps completion sources minimal to prioritize responsiveness.
 
 ### Treesitter
 
@@ -89,6 +95,39 @@ Current Telescope workflow:
 * Ignore `.git`, `node_modules`, `dist`, and `.venv`
 * Search currently open buffers
 
+### Search and Replace
+
+* `grug-far.nvim`
+
+Provides a VS Code-like search and replace workflow without requiring a custom implementation.
+
+Current workflow:
+
+* Project-wide search and replace
+* Current-file search and replace
+* Search and replacement fields in one buffer
+* Live match and replacement preview
+* Explicitly apply replacements
+
+Keymaps:
+
+* `<leader>r` — Search and replace across the project
+* `<leader>rf` — Search and replace in the current file
+
+### Git
+
+* `gitsigns.nvim`
+
+Gitsigns provides lightweight Git context inside the editor while Git CLI remains the primary Git interface.
+
+Current workflow:
+
+* Navigate between changed hunks
+* Stage hunks
+* Reset hunks
+* Preview hunks
+* Blame the current line
+
 ### Buffers
 
 * `bufferline.nvim`
@@ -116,10 +155,10 @@ Leader:
 
 ### Splits
 
-| Key         | Action           |
-| ----------- | ---------------- | 
-| `<leader>\|`| Vertical split   |
-| `<leader>-` | Horizontal split |
+| Key          | Action           |
+| ------------ | ---------------- |
+| `<leader>\|` | Vertical split   |
+| `<leader>-`  | Horizontal split |
 
 ### Buffers
 
@@ -132,14 +171,14 @@ Leader:
 
 ### LSP
 
-| Key          | Action                     |
-| ------------ | -------------------------- |
-| `gd`         | Go to definition           |
-| `gr`         | Find references            |
-| `gI`         | Go to implementation       |
-| `K`          | Show LSP hover information |
-| `<leader>rn` | Rename symbol              |
-| `<leader>ca` | Code action                |
+| Key          | Action               |
+| ------------ | -------------------- |
+| `gd`         | Go to definition     |
+| `gr`         | Find references      |
+| `gI`         | Go to implementation |
+| `K`          | Show LSP hover       |
+| `<leader>rn` | Rename symbol        |
+| `<leader>ca` | Code action          |
 
 ### Diagnostics
 
@@ -151,10 +190,10 @@ Leader:
 
 ### Telescope
 
-| Key                | Action            |
-| ------------------ | ----------------- |
-| `<leader><leader>` | Find files        |
-| `<leader>f`        | Live grep         |
+| Key                | Action     |
+| ------------------ | ---------- |
+| `<leader><leader>` | Find files |
+| `<leader>f`        | Live grep  |
 
 ### Formatting
 
@@ -162,13 +201,31 @@ Leader:
 | --------- | --------------------- |
 | `<C-S-i>` | Format current buffer |
 
+### Git
+
+| Key          | Action             |
+| ------------ | ------------------ |
+| `[c`         | Previous Git hunk  |
+| `]c`         | Next Git hunk      |
+| `<leader>hs` | Stage hunk         |
+| `<leader>hr` | Reset hunk         |
+| `<leader>hp` | Preview hunk       |
+| `<leader>hb` | Blame current line |
+
+### Search and Replace
+
+| Key          | Action                             |
+| ------------ | ---------------------------------- |
+| `<leader>r`  | Search and replace across project  |
+| `<leader>rf` | Search and replace in current file |
+
 ## Installation
 
 ### Requirements
 
 * Neovim 0.12+
 * Git
-* `ripgrep` for Telescope live grep
+* `ripgrep` for Telescope live grep and project search/replace
 * Node.js / npm for Prettier-based formatting
 * A terminal with true-color support
 * A Nerd Font or compatible terminal font is recommended
@@ -219,12 +276,14 @@ Or synchronize plugins directly:
     │   └── theme.lua
     │
     └── plugins/
+        ├── bufferline.lua
         ├── completion.lua
         ├── formatting.lua
+        ├── git.lua
         ├── lsp.lua
+        ├── replace.lua
         ├── telescope.lua
-        ├── treesitter.lua
-        └── bufferline.lua
+        └── treesitter.lua
 ```
 
 The configuration is intentionally split by responsibility rather than putting everything into one large file.
@@ -235,38 +294,26 @@ The setup will continue to grow based on actual needs rather than adding plugins
 
 ### High Priority
 
-* [ ] Harpoon
+* [ ] File explorer
 
-  * Quickly mark important project files
-  * Jump between frequently used files
+  * Add a lightweight dedicated file explorer
+  * Provide a fast project/file navigation workflow
+  * Prefer a focused plugin rather than an all-in-one plugin such as Snacks.nvim
+  * Keep the workflow simple and keyboard-friendly
 
-* [ ] Git integration
+* [ ] System clipboard integration
 
-  * Git signs
-  * Diff workflow
-  * Stage/unstage changes
-  * Blame when needed
-
-* [ ] Diagnostic UX improvements
-
-  * Improve diagnostic signs
-  * Clean up virtual text
-  * Better navigation workflow
-
-* [ ] Search and replace workflow
-
-  * Project-wide replacement
-  * Keep the workflow simple and Telescope/native-first
+  * Make yanks from Neovim available in the system clipboard
+  * Make system clipboard contents available inside Neovim
+  * Preserve the existing clipboard when pasting over a visual selection
+  * Prefer Neovim's native clipboard/register functionality over adding a clipboard plugin
 
 ### Medium Priority
 
-* [ ] Which-key
-
-  * Improve keymap discoverability as the configuration grows
-
 * [ ] Git conflict workflow
 
-  * Better handling of merge conflicts and diffs
+  * Better handling of merge conflicts
+  * Improve diff/navigation workflow if actual usage reveals a need
 
 * [ ] Terminal workflow
 
@@ -278,9 +325,9 @@ The setup will continue to grow based on actual needs rather than adding plugins
 
 ### Low Priority
 
-* [ ] Better file explorer
+* [ ] Better file explorer customization
 
-  * Native `:Ex` is sufficient for now
+  * Only if the initial explorer workflow proves insufficient
 
 * [ ] Telescope image preview
 
@@ -298,9 +345,9 @@ This configuration deliberately avoids:
 * Plugins that duplicate functionality already provided by Neovim
 * Plugins added only because they are popular
 
-The goal is not to have the smallest possible plugin count.
+A plugin is not rejected simply because it is large.
 
-The goal is to have **only plugins that are worth having**.
+It is rejected when its additional functionality is not worth the complexity it introduces to this configuration.
 
 ## Development Approach
 
