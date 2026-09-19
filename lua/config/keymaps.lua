@@ -27,3 +27,8 @@ vim.keymap.set("n", "<S-l>", "<cmd>bnext<CR>")
 vim.keymap.set("n", "<S-h>", "<cmd>bprev<CR>")
 vim.keymap.set("n", "<leader>bd", "<cmd>bdelete<CR>")
 
+-- nvim tree
+vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>")
+
+-- paste (so that visual paste preserves the existing clipboard)
+vim.keymap.set("x", "p", '"_dP"')

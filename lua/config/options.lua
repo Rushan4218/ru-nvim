@@ -35,3 +35,6 @@ vim.diagnostic.config({
 
 -- window decoration
 vim.o.winborder = "rounded"
+
+-- clipboard 
+vim.opt.clipboard = "unnamedplus"

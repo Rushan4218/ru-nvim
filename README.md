@@ -1,268 +1,245 @@
 # ru.nvim
 
-My personal Neovim configuration, built from scratch with Lua.
+My personal Neovim configuration, built from scratch.
 
-The goal is a **fast, minimal, understandable development environment** without relying on a large preconfigured distribution such as LazyVim.
+The goal is simple: **fast, lightweight, good-looking, and fully understood.**
 
-I want to understand what every major part of my editor does, while still having the conveniences I use every day.
+I previously used LazyVim, but eventually wanted more control over my editor and a better understanding of how everything fits together. `ru.nvim` is my attempt to build that environment myself instead of assembling a large preconfigured distribution.
 
-## Philosophy
+---
 
-* Native Neovim functionality first
-* Add a plugin only when it provides meaningful value
-* Keep the configuration modular and easy to understand
-* Avoid large "do everything" plugins
-* Optimize for responsiveness and LSP/completion performance
-* Prefer simple keymaps over layers of abstractions
-* Build the setup incrementally and actually use it before adding more
-
-The goal is not to minimize the number of plugins.
-
-The goal is to have **only plugins that are worth having**.
-
-## Current Setup
+## Features
 
 ### Core
 
 * Lua-based configuration
 * `lazy.nvim` for plugin management
-* Custom configuration built from scratch
-* Leader key: `<Space>`
-* Local leader: `<Space>`
+* Relative line numbers
+* 2-space indentation
+* Smart case-insensitive searching
+* Rounded window borders
+* System clipboard integration
+* Split windows open to the right/below
+* Cursor line highlighting
 
 ### UI
 
 * One Dark Pro
-* Transparent background
+* Bufferline
+* Nvim-tree file explorer
 * Rounded floating windows
-* Relative line numbers
-* Current line shown with an absolute number
-* Cursor line highlighting
-* VS Code-style bufferline
+* LSP diagnostics integrated into the editor
 
 ### Editing
 
-* 2-space indentation
-* Spaces instead of tabs
-* Case-insensitive search with smart case
-* Split windows open to the right and below
-* Native Neovim editing functionality wherever possible
+* Fast completion with `blink.cmp`
+* LSP-powered completion
+* Automatic documentation in completion
+* Format on save with Conform
+* Prettier support
+* System clipboard via `unnamedplus`
+* Visual paste that preserves the existing clipboard
 
 ### LSP
 
-Configured through:
-
 * `nvim-lspconfig`
-* `mason.nvim`
-* `mason-lspconfig.nvim`
-
-Mason manages language-server installation, while `mason-lspconfig` automatically enables available language servers based on the current environment and filetypes.
-
-The configuration is designed to be extensible to any language supported by the LSP ecosystem.
-
-### Completion
-
-* `blink.cmp`
-
-Completion is provided through the LSP where available, with automatic documentation support.
-
-The configuration intentionally keeps completion sources minimal to prioritize responsiveness.
+* Mason
+* Mason LSP config
+* Automatic LSP setup
+* Lua language server configuration
+* Definitions, references, implementations
+* Rename and code actions
+* Diagnostic navigation
 
 ### Treesitter
 
-Treesitter is used for syntax highlighting and indentation.
+Treesitter is enabled for:
 
-The configuration installs parsers for the languages and formats needed by the development environment.
+* Lua
+* Vim
+* Vimdoc
+* JavaScript
+* TypeScript
+* TSX
+* JSON
+* Bash
+* HTML
+* CSS
+* Markdown
+* Markdown inline
 
-### Formatting
+### Search
 
-* `conform.nvim`
-* Prettier for supported web/configuration filetypes
-* Format on save
-* Manual formatting with `<C-S-i>`
+[Telescope](https://github.com/nvim-telescope/telescope.nvim) is used for:
 
-### File Search
+* File search
+* Project-wide grep
+* Buffer switching
 
-* `telescope.nvim`
-* `plenary.nvim`
+Searches include hidden files while ignoring noisy directories such as:
 
-Current Telescope workflow:
+* `.git`
+* `node_modules`
+* `dist`
+* `.venv`
 
-* Find files
-* Live grep
-* Search hidden files
-* Search gitignored files
-* Ignore `.git`, `node_modules`, `dist`, and `.venv`
-* Search currently open buffers
+### Search & Replace
 
-### Search and Replace
+[grug-far.nvim](https://github.com/MagicDuck/grug-far.nvim) provides project and file-level search and replace with a live preview.
 
-* `grug-far.nvim`
+Current mappings:
 
-Provides a VS Code-like search and replace workflow without requiring a custom implementation.
-
-Current workflow:
-
-* Project-wide search and replace
-* Current-file search and replace
-* Search and replacement fields in one buffer
-* Live match and replacement preview
-* Explicitly apply replacements
-
-Keymaps:
-
-* `<leader>r` — Search and replace across the project
-* `<leader>rf` — Search and replace in the current file
+```text
+<leader>r   Search and replace across project
+<leader>rf  Search and replace in current file
+```
 
 ### Git
 
-* `gitsigns.nvim`
+[gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) provides:
 
-Gitsigns provides lightweight Git context inside the editor while Git CLI remains the primary Git interface.
+* Git change indicators
+* Hunk navigation
+* Hunk staging
+* Hunk resetting
+* Hunk preview
+* Line blame
 
-Current workflow:
+### File Explorer
 
-* Navigate between changed hunks
-* Stage hunks
-* Reset hunks
-* Preview hunks
-* Blame the current line
+[nvim-tree](https://github.com/nvim-tree/nvim-tree.lua) provides a visual sidebar file explorer.
+
+The tree is intentionally kept close to its native behavior, with a few custom mappings:
+
+```text
+<leader>e  Toggle file explorer
+h          Collapse directory
+l          Expand directory / open file
+m          Move file
+r          Rename
+H          Toggle hidden files
+a          Create file/directory
+d          Delete
+R          Refresh
+```
+
+Hidden files are shown by default.
 
 ### Buffers
 
-* `bufferline.nvim`
-* Buffer tabs displayed at the top
-* Current buffer highlighted
-* Previous/next buffer navigation
-* Buffer deletion
+Buffer navigation:
+
+```text
+<S-l>       Next buffer
+<S-h>       Previous buffer
+<leader>bd  Delete buffer
+```
+
+---
 
 ## Keymaps
 
-Leader:
+### Window navigation
 
 ```text
-<Space>
+<C-h>  Move to left split
+<C-j>  Move to lower split
+<C-k>  Move to upper split
+<C-l>  Move to right split
 ```
-
-### Window Navigation
-
-| Key     | Action              |
-| ------- | ------------------- |
-| `<C-h>` | Move to left split  |
-| `<C-j>` | Move to lower split |
-| `<C-k>` | Move to upper split |
-| `<C-l>` | Move to right split |
-
-### Splits
-
-| Key          | Action           |
-| ------------ | ---------------- |
-| `<leader>\|` | Vertical split   |
-| `<leader>-`  | Horizontal split |
-
-### Buffers
-
-| Key          | Action                             |
-| ------------ | ---------------------------------- |
-| `<S-h>`      | Previous buffer                    |
-| `<S-l>`      | Next buffer                        |
-| `<leader>bd` | Delete current buffer              |
-| `<leader>bb` | Pick an open buffer with Telescope |
 
 ### LSP
 
-| Key          | Action               |
-| ------------ | -------------------- |
-| `gd`         | Go to definition     |
-| `gr`         | Find references      |
-| `gI`         | Go to implementation |
-| `K`          | Show LSP hover       |
-| `<leader>rn` | Rename symbol        |
-| `<leader>ca` | Code action          |
+```text
+gd         Go to definition
+gr         Find references
+gI         Go to implementation
+
+<leader>rn Rename
+<leader>ca Code action
+```
 
 ### Diagnostics
 
-| Key         | Action              |
-| ----------- | ------------------- |
-| `[d`        | Previous diagnostic |
-| `]d`        | Next diagnostic     |
-| `<leader>d` | Show diagnostic     |
+```text
+[d         Previous diagnostic
+]d         Next diagnostic
+<leader>d  Show diagnostic
+```
 
 ### Telescope
 
-| Key                | Action     |
-| ------------------ | ---------- |
-| `<leader><leader>` | Find files |
-| `<leader>f`        | Live grep  |
+```text
+<leader><leader>  Find files
+<leader>f         Live grep
+<leader>bb        Find buffers
+```
+
+### Splits
+
+```text
+<leader>|  Vertical split
+<leader>-  Horizontal split
+```
 
 ### Formatting
 
-| Key       | Action                |
-| --------- | --------------------- |
-| `<C-S-i>` | Format current buffer |
+```text
+<C-S-i>  Format buffer
+```
 
 ### Git
 
-| Key          | Action             |
-| ------------ | ------------------ |
-| `[c`         | Previous Git hunk  |
-| `]c`         | Next Git hunk      |
-| `<leader>hs` | Stage hunk         |
-| `<leader>hr` | Reset hunk         |
-| `<leader>hp` | Preview hunk       |
-| `<leader>hb` | Blame current line |
+```text
+[c         Previous hunk
+]c         Next hunk
 
-### Search and Replace
+<leader>hs  Stage hunk
+<leader>hr  Reset hunk
+<leader>hp  Preview hunk
+<leader>hb  Blame line
+```
 
-| Key          | Action                             |
-| ------------ | ---------------------------------- |
-| `<leader>r`  | Search and replace across project  |
-| `<leader>rf` | Search and replace in current file |
+### Clipboard
+
+System clipboard integration is enabled through:
+
+```lua
+vim.opt.clipboard = "unnamedplus"
+```
+
+Visual paste is configured so that replacing a selection does not overwrite the existing clipboard contents.
+
+---
 
 ## Installation
 
-### Requirements
-
-* Neovim 0.12+
-* Git
-* `ripgrep` for Telescope live grep and project search/replace
-* Node.js / npm for Prettier-based formatting
-* A terminal with true-color support
-* A Nerd Font or compatible terminal font is recommended
-
-### Install
-
-Clone `ru.nvim` directly into Neovim's default configuration directory:
+Clone the repository into your Neovim configuration directory:
 
 ```bash
-git clone <repository-url> ~/.config/nvim
+git clone <repo-url> ~/.config/nvim
 ```
 
-Then simply start Neovim:
+Then launch:
 
 ```bash
 nvim
 ```
 
-The configuration bootstraps `lazy.nvim` automatically on first launch.
+`lazy.nvim` bootstraps automatically on first launch.
 
-> **Warning:** Installing `ru.nvim` into `~/.config/nvim` replaces the existing Neovim configuration at that location. Back up your existing configuration first if you have one.
+### Requirements
 
-### Updating Plugins
+* Neovim 0.12+
+* Git
+* A working system clipboard provider
+* A Nerd Font is recommended for icons
 
-Inside Neovim:
+On Wayland, `wl-clipboard` provides the system clipboard integration.
 
-```vim
-:Lazy
-```
+---
 
-Or synchronize plugins directly:
-
-```vim
-:Lazy sync
-```
-
-## Configuration Structure
+## Structure
 
 ```text
 ~/.config/nvim/
@@ -271,103 +248,63 @@ Or synchronize plugins directly:
 ├── README.md
 └── lua/
     ├── config/
-    │   ├── options.lua
     │   ├── keymaps.lua
-    │   └── theme.lua
-    │
+    │   └── options.lua
     └── plugins/
         ├── bufferline.lua
         ├── completion.lua
-        ├── formatting.lua
+        ├── explorer.lua
+        ├── formatter.lua
         ├── git.lua
         ├── lsp.lua
         ├── replace.lua
         ├── telescope.lua
+        ├── theme.lua
         └── treesitter.lua
 ```
 
-The configuration is intentionally split by responsibility rather than putting everything into one large file.
+The configuration is intentionally split by responsibility:
 
-## Future Plans
+* `config/options.lua` — editor options
+* `config/keymaps.lua` — global keymaps
+* `plugins/` — plugin configuration
 
-The setup will continue to grow based on actual needs rather than adding plugins for the sake of having features.
+---
 
-### High Priority
+## Philosophy
 
-* [ ] File explorer
+`ru.nvim` is built around a few rules:
 
-  * Add a lightweight dedicated file explorer
-  * Provide a fast project/file navigation workflow
-  * Prefer a focused plugin rather than an all-in-one plugin such as Snacks.nvim
-  * Keep the workflow simple and keyboard-friendly
+1. **Understand the tool before configuring it.**
+2. **Use native Neovim functionality whenever possible.**
+3. **Don't add a plugin just because everyone else uses it.**
+4. **Keep configuration small and readable.**
+5. **Optimize for actual workflow annoyances.**
+6. **Measure performance instead of guessing.**
 
-* [ ] System clipboard integration
+The goal isn't to recreate someone else's Neovim distribution.
 
-  * Make yanks from Neovim available in the system clipboard
-  * Make system clipboard contents available inside Neovim
-  * Preserve the existing clipboard when pasting over a visual selection
-  * Prefer Neovim's native clipboard/register functionality over adding a clipboard plugin
+It's to build an editor that feels right because I understand why every piece is there.
 
-### Medium Priority
+---
 
-* [ ] Git conflict workflow
+## Things intentionally avoided
 
-  * Better handling of merge conflicts
-  * Improve diff/navigation workflow if actual usage reveals a need
+Some popular plugins/features are intentionally not part of this setup.
 
-* [ ] Terminal workflow
-
-  * Evaluate whether a terminal plugin is actually necessary
-
-* [ ] Project/session management
-
-  * Restore useful buffers and windows when returning to projects
-
-### Low Priority
-
-* [ ] Better file explorer customization
-
-  * Only if the initial explorer workflow proves insufficient
-
-* [ ] Telescope image preview
-
-  * Intentionally postponed
-
-## Plugins I Intentionally Do Not Want
-
-This configuration deliberately avoids:
+For example:
 
 * Snacks.nvim
 * fzf-lua
-* Large all-in-one Neovim distributions
-* Unnecessary statusline plugins
-* Unnecessary dashboard plugins
-* Plugins that duplicate functionality already provided by Neovim
-* Plugins added only because they are popular
+* Large all-in-one configuration frameworks
+* Plugins that duplicate functionality already provided by Neovim or an existing plugin
 
-A plugin is not rejected simply because it is large.
+If something can be solved cleanly with a few lines of native Lua, that's usually preferable.
 
-It is rejected when its additional functionality is not worth the complexity it introduces to this configuration.
+---
 
-## Development Approach
+## Future
 
-This configuration is built incrementally.
+The configuration is intentionally evolving through actual use rather than a predefined checklist.
 
-Each feature follows roughly this process:
-
-```text
-Build
-  ↓
-Test
-  ↓
-Use
-  ↓
-Identify actual pain
-  ↓
-Add only what solves that pain
-```
-
-The configuration should remain understandable even as it grows.
-
-No feature is considered necessary just because another Neovim configuration has it.
-
+Potential additions will be driven by real workflow problems rather than by trying to recreate a "complete" Neovim setup.
